@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-df = pd.read_csv('data/sakila_to_csv.csv')
+df = pd.read_csv('data/sakila_to_csv_pg.csv')
 
 df_copy = df.copy()
 
@@ -22,7 +22,7 @@ df_copy.drop(columns=[
     'category_id'
 ], inplace=True)
 
-df_copy = df_copy.dropna(subset=['return_date']) # там 1.1% был null, это мало, так что под снос
+df_copy['return_date'] = df_copy['return_date'].fillna(df_copy['return_date'].mode()[0])
 
 df_optimized = df_copy.copy()
 
@@ -31,8 +31,9 @@ df_optimized['rental_duration'] = df_optimized['rental_duration'].astype('int8')
 df_optimized['store_id'] = df_optimized['store_id'].astype('int8')
 df_optimized['rating'] = df_optimized['rating'].astype('category')
 df_optimized['category'] = df_optimized['category'].astype('category')
+df_optimized['rental_date'] = pd.to_datetime(df_optimized['rental_date'])
 
 print(df_optimized.dtypes)
 
-df_optimized.to_csv('data/optimized_sakila.csv', index=False)
+df_optimized.to_csv('data/optimized_sakila_pg.csv', index=False)
 

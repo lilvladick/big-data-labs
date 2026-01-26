@@ -12,6 +12,7 @@ numeric_columns = df.select_dtypes(include=["int64", "float64"]).columns
 
 # print(df[numeric_columns].describe())
 
+# скок стоит аренда и позиции в чеке
 features_columns = ["rental_rate", "amount"]  # адекватные столбики (главное что не айди =) )
 
 for column in features_columns:
