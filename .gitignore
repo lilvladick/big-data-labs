@@ -30,3 +30,6 @@ dist/
 build/
 *.egg-info/
 .idea/
+
+*.html
+*.csv
