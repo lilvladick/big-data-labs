@@ -1,6 +1,10 @@
 import numpy as np
 import pandas as pd
 
+from lab_2.utils.encoding import encode
+from lab_2.utils.new_features import create_features
+
+
 def calculate_metrics(df: pd.DataFrame) -> dict:
     results = {}
 
@@ -30,6 +34,8 @@ def calculate_metrics(df: pd.DataFrame) -> dict:
 
 if __name__ == "__main__":
     df_test = pd.read_csv("../data/optimized_sakila_pg.csv")
+    df_test = create_features(df_test)
+    df_test = encode(df_test)
     result = calculate_metrics(df_test)
     for col, stats in result.items():
         print(f"\n{col}:")
