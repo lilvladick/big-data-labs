@@ -1,6 +1,7 @@
 import pandas as pd
 from scipy import stats
 
+# todo: сделать подтвержающуюся гипотезу
 
 def hypothesis_one(df: pd.DataFrame) -> dict:
     # думаем что омерекенцы несут больше шекелей чем другие страны
