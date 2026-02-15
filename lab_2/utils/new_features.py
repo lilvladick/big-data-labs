@@ -14,4 +14,5 @@ def create_features(df: pd.DataFrame) -> pd.DataFrame:
     fp = df.groupby('film_id')['rental_id'].count().rename('film_popularity')
     df = df.merge(fp, on=['film_id'], how="left")
 
+
     return df

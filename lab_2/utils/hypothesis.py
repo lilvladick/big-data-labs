@@ -75,3 +75,43 @@ def hypothesis_two(df: pd.DataFrame) -> dict:
         conclusion = f"Не отклоняем H0 (p={p_val:.4f}). Рейтинги не влияют."
 
     return {'test': test_name, 'p_value': float(p_val), 'conclusion': conclusion, 'normality_flags': normality_flags}
+
+
+def hypothesis_three(df: pd.DataFrame) -> dict:
+    # длинные фильмы чаще берут чем короткие
+    if 'length' not in df.columns or 'film_popularity' not in df.columns:
+        return {'error': "Требуются колонки 'length' и 'rental_count' (сгенерируй через GROUP BY)"}
+
+    short = df[df['length'] < 90]['film_popularity'].dropna()
+    long = df[df['length'] > 120]['film_popularity'].dropna()
+
+    if len(short) < 3 or len(long) < 3:
+        return {'error': 'Недостаточно данных по группам фильмов'}
+
+    sample_short = short.sample(min(500, len(short)), random_state=42)
+    sample_long = long.sample(min(500, len(long)), random_state=42)
+
+    _, p_short = stats.shapiro(sample_short)
+    _, p_long = stats.shapiro(sample_long)
+
+    # Выбираем тест
+    if p_short > 0.05 and p_long > 0.05:
+        stat, p_val = stats.ttest_ind(short, long, equal_var=False)
+        test_name = "Welch's t-test"
+    else:
+        stat, p_val = stats.mannwhitneyu(short, long, alternative='two-sided')
+        test_name = "Mann-Whitney U test"
+
+    alpha = 0.05
+    if p_val < alpha:
+        conclusion = (
+            f"Отклоняем H0 (p={p_val:.4f}). Длина фильма влияет на популярность. "
+            f"Длинные: {long.median():.1f}, Короткие: {short.median():.1f} прокатов"
+        )
+    else:
+        conclusion = (
+            f"Не отклоняем H0 (p={p_val:.4f}). Длина фильма не влияет на популярность. "
+            f"Медианы близки: {short.median():.1f}, {long.median():.1f}"
+        )
+
+    return {'test': test_name, 'p_value': float(p_val), 'conclusion': conclusion,}

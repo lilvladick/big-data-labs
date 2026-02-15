@@ -13,7 +13,7 @@ numeric_columns = df.select_dtypes(include=["int64", "float64"]).columns
 # print(df[numeric_columns].describe())
 
 #позиции в чеке и что-то
-features_columns = ["amount", "replacement_cost"]  # адекватные столбики (главное что не айди =) )
+features_columns = ["amount", "replacement_cost"]  # адекватные столбики (главное что не айди =))
 
 for column in features_columns:
     print("Stats:\n", df[column].describe())

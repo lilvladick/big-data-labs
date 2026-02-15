@@ -52,3 +52,44 @@ sns.jointplot(
     kind="hex"
 )
 plt.show()
+
+pivot_data = df.groupby(['category', 'rating'])['amount'].mean().reset_index()
+
+plt.figure(figsize=(14, 7))
+sns.barplot(
+    data=pivot_data,
+    x='category',
+    y='amount',
+    hue='rating',
+    palette='Set2'
+)
+plt.title('Средний доход по жанрам фильмов с разбивкой по возрастному рейтингу', fontsize=14, fontweight='bold')
+plt.xlabel('Жанр фильма')
+plt.ylabel('Средний доход ($)')
+plt.xticks(rotation=45, ha='right')
+plt.legend(title='Рейтинг MPAA', bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.tight_layout()
+plt.show()
+
+top_categories = df['category'].value_counts().nlargest(5).index
+filtered_df = df[df['category'].isin(top_categories)]
+
+plt.figure(figsize=(12, 8))
+sns.scatterplot(
+    data=filtered_df,
+    x='length',          # количественный
+    y='replacement_cost', # количественный
+    hue='category',      # категориальный (жанр)
+    size='amount',       # количественный (размер точки = доход)
+    sizes=(40, 200),
+    alpha=0.6,
+    palette='tab10'
+)
+plt.title('Зависимость длительности фильма и стоимости замены с разбивкой по жанру\n(размер точки = доход от проката)',
+          fontsize=13, fontweight='bold')
+plt.xlabel('Длительность фильма (минуты)')
+plt.ylabel('Стоимость замены ($)')
+plt.legend(title='Жанр', bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()

@@ -1,10 +1,10 @@
 import pandas as pd
 
 from lab_2.utils.encoding import encode
-from lab_2.utils.hypothesis import hypothesis_one, hypothesis_two
+from lab_2.utils.hypothesis import hypothesis_one, hypothesis_two, hypothesis_three
 from lab_2.utils.metrics import calculate_metrics
 from lab_2.utils.new_features import create_features
-from lab_2.utils.plots import plot_hypothesis_one, plot_hypothesis_two
+from lab_2.utils.plots import plot_hypothesis_one, plot_hypothesis_two, plot_hypothesis_three
 
 df = pd.read_csv("data/optimized_sakila_pg.csv")
 print("data: ", df.shape)
@@ -33,3 +33,7 @@ print()
 h2 = hypothesis_two(df)
 plot_hypothesis_two(df)
 print(h2)
+
+h3 = hypothesis_three(df)
+plot_hypothesis_three(df)
+print(h3)

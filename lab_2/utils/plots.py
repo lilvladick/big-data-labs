@@ -14,3 +14,19 @@ def plot_hypothesis_two(df):
     plt.xlabel('Рейтинг')
     plt.ylabel('Выручка')
     plt.show()
+
+
+def plot_hypothesis_three(df):
+    df['group'] = 'Другие'
+    df.loc[df['length'] < 90, 'group'] = 'Короткие (<90 мин)'
+    df.loc[df['length'] > 120, 'group'] = 'Длинные (>120 мин)'
+
+    df_plot = df[df['group'] != 'Другие']
+
+    sns.boxplot(data=df_plot, x='group', y='film_popularity')
+
+    plt.ylabel('Прокаты')
+    plt.xlabel('Группа по длине')
+
+    plt.tight_layout()
+    plt.show()
